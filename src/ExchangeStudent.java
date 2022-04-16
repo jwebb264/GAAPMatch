@@ -6,6 +6,9 @@ import javax.swing.*;
 //TODO: Get quiz matching up and working
 public class ExchangeStudent implements ActionListener {
 
+    /**
+     * Array of questions designed for students spending time in another country
+     */
     String[] questions = {
             "What is your gender?",
             "Do you smoke or live with someone who does?",
@@ -37,6 +40,9 @@ public class ExchangeStudent implements ActionListener {
             {"Yes", "No"}
     };
 
+    /**
+     * additional variables needed for construction of quiz
+     */
     char answers;
     char index;
     int total_question = questions.length;
@@ -59,7 +65,9 @@ public class ExchangeStudent implements ActionListener {
 
     JTextArea possibleMatched = new JTextArea();    //show possible matches
 
-
+    /**
+     * Constructor
+     */
     public ExchangeStudent(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(650, 650);
@@ -68,6 +76,10 @@ public class ExchangeStudent implements ActionListener {
         frame.setVisible(true);
     }
 
+    /**
+     * Will take us to next question when button is clicked
+     * TODO: Include confirmation?
+     */
     public void nextQuestion(){
 
     }
@@ -81,11 +93,10 @@ public class ExchangeStudent implements ActionListener {
 
     }
 
+    /**
+     * After quiz is completed, allow user to check their answers
+     */
     public void displayAnswers(){
 
     }
-
-
-
-
 }

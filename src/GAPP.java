@@ -1,7 +1,7 @@
 public class GAPP {
     protected boolean medicalIssues;
     protected char gender;
-    protected char genderPreference;
+    //protected char genderPreference;
     protected boolean smokes;
     protected boolean okWithSmoking;
     protected boolean environmentalAllergies;
