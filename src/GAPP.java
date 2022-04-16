@@ -1,14 +1,5 @@
 public class GAPP {
-    protected boolean medicalIssues;
-    protected char gender;
-    //protected char genderPreference;
-    protected boolean smokes;
-    protected boolean okWithSmoking;
-    protected boolean environmentalAllergies;
-    protected boolean foodAllergies;
-    protected boolean seperateRoom;
-    protected String religious;
-    protected boolean canAccomodate;
+
 
     public GAPP(){
 
