@@ -2,21 +2,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Host implements ActionListener{
+public class HostFamily implements ActionListener, Host{
     String[] questions = {
-            "What is your student's gender?",
-
-            "Do you have any pets at home?",
-            "Are you able to accommodate a student who has food allergies?",
-            "Are you religious?",
-            "Are you able to accommodate a student's chronic medical conditions, such as asthma or diabetes?",
-            "Do you have a separate room available for your guest to stay in?",
-            "Do you smoke or do you live with someone who does?",
-            "If you smoke, will you do so outside the home?",
-            "Will you accept a student of another gender from your student?",
-            "Does your family follow any dietary restrictions?"
+            "1. What is your student's gender?",
+            "2. Do you have any pets at home?",
+            "3. Are you able to accommodate a student who has food allergies?",
+            "4. Are you religious?",
+            "5. Are you able to accommodate a student's chronic medical conditions, such as asthma or diabetes?",
+            "6. Do you have a separate room available for your guest to stay in?",
+            "7. Do you smoke or do you live with someone who does?",
+            "8. If you smoke, will you do so outside the home?",
+            "9. Will you accept a student of another gender from your student?",
+            "10. Does your family follow any dietary restrictions?"
     };
 
     String[][] options = {
@@ -46,7 +45,6 @@ public class Host implements ActionListener{
     /**
      * additional variables needed for construction of quiz
      */
-    ArrayList<Character> hostAnswers = new ArrayList<>();
     char index;
     int total_questions = questions.length;
 
@@ -57,7 +55,7 @@ public class Host implements ActionListener{
      * Constructor
      */
 
-    Host(){
+    HostFamily(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(650, 650);
         frame.getContentPane().setBackground(new Color(230,230,230));       //lightest color
@@ -124,7 +122,6 @@ public class Host implements ActionListener{
             buttonB.setText(options[index][1]);
             answer_labelA.setText(options[index][0]);
             answer_labelB.setText(options[index][1]);
-            // answer_labelC.setText(options[index][2]);
         }
     }
 
@@ -135,27 +132,35 @@ public class Host implements ActionListener{
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
-        if(e.getSource()==buttonA){
-            hostAnswers.add('Y');       //Y = Male
+      /*  if(e.getSource()==buttonA){
+            hostResponses.put(index+1, 'Y');       //Y = Male
             yes++;
         }
 
         if(e.getSource()==buttonB){
-            hostAnswers.add('N');       //N = Female
+            hostResponses.put(index+1, 'N');       //N = Female
             no++;
-        }
+        }*/
 
         index++;
         nextQuestion();
 
     }
 
+
+
     public void results(){
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
         textfield.setText("RESULTS");
-        textArea.setText("Your yes answers: " + yes + "\n"+"No answers: "+no);
+        textArea.setText("Answers: "+hostResponses);
+
+    }
+
+    @Override
+    public HashMap getHostResponses() {
+        return hostResponses;
     }
 }
 //end program

@@ -1,26 +1,26 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.*;
 import javax.swing.*;
 
-public class ExchangeStudent implements ActionListener {
+public class ExchangeStudent implements ActionListener, Serializable, Student {
 
     /**
      * Array of questions designed for students spending time in another country
      */
     String[] questions = {
-            "What is your gender?",
-
-            "Do you have any pet allergies?",
-            "Do you have any food allergies?",
-            "Are you religious?",
-            "Do you have any medical conditions that will need regular treatment? (asthma, diabetes, etc)",
-            "Do you prefer to have a separate room?",
-            "Do you smoke or do you live with someone who does?",
-            "If you do not smoke, can you stay in a home with smoking?",
-            "Will you stay with someone of another gender from you? (Seperate rooms are required.)",
-            "Do you have any dietary restrictions?"
+            "1. What is your gender?",
+            "2. Do you have any pet allergies?",
+            "3. Do you have any food allergies?",
+            "4. Are you religious?",
+            "5. Do you have any medical conditions that will need regular treatment? (asthma, diabetes, etc)",
+            "6. Do you prefer to have a separate room?",
+            "7. Do you smoke or do you live with someone who does?",
+            "8. If you do not smoke, can you stay in a home with smoking?",
+            "9. Will you stay with someone of another gender from you? (Seperate rooms are required.)",
+            "10. Do you have any dietary restrictions?"
 
     };
 
@@ -56,7 +56,6 @@ public class ExchangeStudent implements ActionListener {
     /**
      * additional variables needed for construction of quiz
      */
-    ArrayList <Character> studentAnswers = new ArrayList<>();
     char index;
     int total_questions = questions.length;
 
@@ -133,7 +132,6 @@ public class ExchangeStudent implements ActionListener {
             buttonB.setText(options[index][1]);
             answer_labelA.setText(options[index][0]);
             answer_labelB.setText(options[index][1]);
-            // answer_labelC.setText(options[index][2]);
         }
     }
 
@@ -144,27 +142,35 @@ public class ExchangeStudent implements ActionListener {
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
-        if(e.getSource()==buttonA){
-            studentAnswers.add('Y');       //Y = Male
+       /* if(e.getSource()==buttonA){
+            studentResponses.put(index+1, 'Y');       //Y = Male
             yes++;
         }
 
         if(e.getSource()==buttonB){
-            studentAnswers.add('N');       //N = Female
+            studentResponses.put(index+1, 'N');       //N = Female
             no++;
-        }
+        }*/
 
         index++;
         nextQuestion();
 
     }
 
+
     public void results(){
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
         textfield.setText("RESULTS");
-        textArea.setText("Your yes answers: " + yes + "\n"+"No answers: "+no);
+        textArea.setText("Answers: "+studentResponses);
+
+    }
+
+
+    @Override
+    public HashMap getStudentResponses() {
+        return studentResponses;
     }
 }
 //end program
