@@ -116,7 +116,7 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
 
     /**
      * Will take us to next question when button is clicked
-     * TODO: Include confirmation?
+     *
      */
     public void nextQuestion(){
         buttonA.setEnabled(true);
@@ -135,14 +135,20 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
         }
     }
 
+
     int yes=0;
     int no=0;
+
+    /**
+     * disable buttons when clicked, increment yes/no answers, move to next question, fill array
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
-       /* if(e.getSource()==buttonA){
+       if(e.getSource()==buttonA){
             studentResponses.put(index+1, 'Y');       //Y = Male
             yes++;
         }
@@ -150,14 +156,16 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
         if(e.getSource()==buttonB){
             studentResponses.put(index+1, 'N');       //N = Female
             no++;
-        }*/
+        }
 
         index++;
         nextQuestion();
 
     }
 
-
+    /**
+     * show results - prove that array is being filled
+     */
     public void results(){
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
@@ -167,7 +175,10 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
 
     }
 
-
+    /**
+     * from interface
+     * @return hashmap
+     */
     @Override
     public HashMap getStudentResponses() {
         return studentResponses;

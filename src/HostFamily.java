@@ -106,7 +106,7 @@ public class HostFamily implements ActionListener, Host{
 
     /**
      * Will take us to next question when button is clicked
-     * TODO: Include confirmation?
+     *
      */
     public void nextQuestion(){
         buttonA.setEnabled(true);
@@ -127,12 +127,17 @@ public class HostFamily implements ActionListener, Host{
 
     int yes = 0;
     int no = 0;
+
+    /**
+     * disables buttons, fills array, increments y/n, moves to next question
+     * @param e
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
-      /*  if(e.getSource()==buttonA){
+      if(e.getSource()==buttonA){
             hostResponses.put(index+1, 'Y');       //Y = Male
             yes++;
         }
@@ -140,15 +145,15 @@ public class HostFamily implements ActionListener, Host{
         if(e.getSource()==buttonB){
             hostResponses.put(index+1, 'N');       //N = Female
             no++;
-        }*/
+        }
 
         index++;
         nextQuestion();
 
     }
-
-
-
+    /**
+     * shows results of what was answered - testing, makes sure hashmap is being filled
+     */
     public void results(){
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
@@ -158,6 +163,10 @@ public class HostFamily implements ActionListener, Host{
 
     }
 
+    /**
+     * from interface
+     * @return hashmap
+     */
     @Override
     public HashMap getHostResponses() {
         return hostResponses;

@@ -2,10 +2,10 @@
 //TODO: rerun program with next student/host to find match
 //TODO: rank matches based on scores
 
-public class Main {
+public class Main implements Host{
     public static void main(String[] args){
         String login = "Student";
-        GAPP n = new GAPP();
+        
 
         if (login.startsWith("E") || login.startsWith("S")){
             ExchangeStudent student = new ExchangeStudent();
@@ -36,13 +36,6 @@ public class Main {
                 host.hostResponses.put(9, 'N');
                 host.hostResponses.put(10, 'Y');
 
-                System.out.println(host.hostResponses.get(3));
-
         }
-
-
-
-
-
     }
 }//end of program

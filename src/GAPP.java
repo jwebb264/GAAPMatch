@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.*;
 
 public class GAPP implements Student, Host {
 
