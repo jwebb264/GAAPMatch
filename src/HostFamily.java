@@ -138,12 +138,12 @@ public class HostFamily implements ActionListener, Host{
         buttonB.setEnabled(false);
 
       if(e.getSource()==buttonA){
-            hostResponses.put(index+1, 'Y');       //Y = Male
+            hostResponses.put(index+1, "Y");       //Y = Male
             yes++;
         }
 
         if(e.getSource()==buttonB){
-            hostResponses.put(index+1, 'N');       //N = Female
+            hostResponses.put(index+1, "N");       //N = Female
             no++;
         }
 

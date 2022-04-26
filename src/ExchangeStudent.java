@@ -149,17 +149,18 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
         buttonB.setEnabled(false);
 
        if(e.getSource()==buttonA){
-            studentResponses.put(index+1, 'Y');       //Y = Male
+            studentResponses.put(index+1, "Yes");       //Y = Male
             yes++;
         }
 
         if(e.getSource()==buttonB){
-            studentResponses.put(index+1, 'N');       //N = Female
+            studentResponses.put(index+1, "No");       //N = Female
             no++;
         }
 
         index++;
         nextQuestion();
+        studentResponses.toString();
 
     }
 
@@ -171,7 +172,7 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
         buttonB.setEnabled(false);
 
         textfield.setText("RESULTS");
-        textArea.setText("Answers: "+studentResponses);
+        textArea.setText("Answers: "+ studentResponses);
 
     }
 
@@ -183,5 +184,7 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
     public HashMap getStudentResponses() {
         return studentResponses;
     }
+
+
 }
 //end program
