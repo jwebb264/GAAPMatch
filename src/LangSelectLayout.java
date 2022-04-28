@@ -106,6 +106,8 @@ public class LangSelectLayout extends QuizLayout implements ActionListener {
     	buttonB.addActionListener(new ActionListener() {
     		public void actionPerformed (ActionEvent e) {
     			buttonBPressed();
+    			QuizLayout quiz = new QuizLayout();
+        		quiz.nextQuestion();
     		}
     	});
     	
@@ -117,8 +119,6 @@ public class LangSelectLayout extends QuizLayout implements ActionListener {
     	 */
     	protected boolean buttonAPressed() {
     		boolean English = true;
-    		QuizLayout quiz = new QuizLayout();
-    		quiz.nextQuestion();
     		
 			return English;
     	}
@@ -130,9 +130,7 @@ public class LangSelectLayout extends QuizLayout implements ActionListener {
     	 */
     	protected boolean buttonBPressed() {
     		boolean English = false;
-    		QuizLayout quiz = new QuizLayout();
-    		quiz.nextQuestion();
-    		
+    	
 			return English;
     	}
      
