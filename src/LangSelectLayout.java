@@ -98,6 +98,8 @@ public class LangSelectLayout extends QuizLayout implements ActionListener {
     	buttonA.addActionListener(new ActionListener() {
     		public void actionPerformed (ActionEvent e) {
     			buttonAPressed();
+			QuizLayout quiz = new QuizLayout();
+        		quiz.nextQuestion();
     			
     		}
     	});
