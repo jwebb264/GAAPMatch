@@ -16,6 +16,11 @@
       <scope>compile</scope>
     </dependency>
     <dependency>
+      <groupId>GAAPMatch</groupId>
+      <artifactId>GAAPMatch</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>org.mongodb</groupId>
       <artifactId>mongo-java-driver</artifactId>
       <version>3.12.10</version>

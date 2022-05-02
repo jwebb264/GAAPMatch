@@ -1,8 +1,22 @@
+import com.mongodb.Mongo;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
 import java.util.*;
 
 public class GAPP implements Student, Host {
 
 protected int compatibilityCounter = 0;
+
+    /**
+     * Connect to database
+     */
+    MongoClient client = MongoClients.create("localhost:27017");
+    MongoDatabase db = client.getDatabase("GAPP");
+    MongoCollection collection = db.getCollection("GAPPCollection");
+
 
     public GAPP(){
 
@@ -126,4 +140,5 @@ protected int compatibilityCounter = 0;
     public HashMap getStudentResponses() {
         return studentResponses;
     }
+
 }//end program

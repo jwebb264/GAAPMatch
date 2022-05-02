@@ -1,8 +1,15 @@
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class HostFamily implements ActionListener, Host{
     String[] questions = {
@@ -160,7 +167,32 @@ public class HostFamily implements ActionListener, Host{
 
         textfield.setText("RESULTS");
         textArea.setText("Answers: "+hostResponses);
+        addToDatabase();
+    }
 
+    public void addToDatabase(){
+        UUID ID = UUID.randomUUID();
+        String id = ID.toString();
+        MongoClient client = MongoClients.create("mongodb+srv://GappUser:123456Password@gapp.dpgom.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+
+        MongoDatabase db = client.getDatabase("GAPP");
+        MongoCollection collection = db.getCollection("GAPPCollection");
+        Document sampleDoc = new Document("_id", id)
+                .append("type", "Host")
+                .append("gender", hostResponses.get(1))
+                .append("pet_allergies",hostResponses.get(2))
+                .append("food_allergies",hostResponses.get(3))
+                .append("religious",hostResponses.get(4))
+                .append("medical_conditions",hostResponses.get(5))
+                .append("separate_room",hostResponses.get(6))
+                .append("smokes", hostResponses.get(7))
+                .append("stay_with_smoker",hostResponses.get(8))
+                .append("stay_with_other_gender",hostResponses.get(9))
+                .append("dietary_restrictions", hostResponses.get(10));
+
+        collection.insertOne(sampleDoc);
+
+        System.out.print(collection.find());
     }
 
     /**

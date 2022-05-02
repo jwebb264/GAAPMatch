@@ -1,11 +1,17 @@
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.Serializable;
 import java.util.*;
 import javax.swing.*;
 
-public class ExchangeStudent implements ActionListener, Serializable, Student {
+public class ExchangeStudent implements ActionListener, Student {
 
     /**
      * Array of questions designed for students spending time in another country
@@ -40,9 +46,8 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
             {"Yes", "No"},
             {"Yes", "No"}
     };
-
     /**
-     * GUI components
+     * GUI
      */
     JFrame frame = new JFrame();
     JTextField textfield = new JTextField();
@@ -52,7 +57,6 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
 
     JLabel answer_labelA = new JLabel();
     JLabel answer_labelB = new JLabel();
-
     /**
      * additional variables needed for construction of quiz
      */
@@ -61,6 +65,7 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
 
     JTextField responses = new JTextField();        //show them their responses
     JTextArea possibleMatched = new JTextArea();    //show possible matches
+
 
     /**
      * Constructor
@@ -174,6 +179,31 @@ public class ExchangeStudent implements ActionListener, Serializable, Student {
         textfield.setText("RESULTS");
         textArea.setText("Answers: "+ studentResponses);
 
+        //Connect to db
+        addToDatabase();
+    }
+
+    public void addToDatabase(){
+        UUID ID = UUID.randomUUID();
+        String id = ID.toString();
+        MongoClient client = MongoClients.create("mongodb+srv://GappUser:123456Password@gapp.dpgom.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
+
+        MongoDatabase db = client.getDatabase("GAPP");
+        MongoCollection collection = db.getCollection("GAPPCollection");
+        Document sampleDoc = new Document("_id", id)
+                .append("type", "Student")
+                .append("gender", studentResponses.get(1))
+                .append("pet_allergies",studentResponses.get(2))
+                .append("food_allergies",studentResponses.get(3))
+                .append("religious",studentResponses.get(4))
+                .append("medical_conditions",studentResponses.get(5))
+                .append("separate_room",studentResponses.get(6))
+                .append("smokes", studentResponses.get(7))
+                .append("stay_with_smoker",studentResponses.get(8))
+                .append("stay_with_other_gender",studentResponses.get(9))
+                .append("dietary_restrictions", studentResponses.get(10));
+
+        collection.insertOne(sampleDoc);
     }
 
     /**
