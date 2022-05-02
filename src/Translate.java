@@ -80,7 +80,31 @@ public class Translate extends ExchangeStudent {
 	        // The translated array of options
 	        return translatedArrayOptions;
 	    }
-}}
+}
+	/** Needs more work and put in the right spot but SHOULD translate both the options and answers arrays and progress through
+		when the result array and options translate array are passed
+	*/
+	
+	public void nextQuestion(TranslateTextResult[] translationQ, TranslateTextResult[][] translationA){
+    	int i = 0;
+    	int total_questions = translationQ.length;
+        buttonA.setEnabled(true);
+        buttonB.setEnabled(true);
+
+        if (i >= total_questions){
+            results();
+        } else {
+            textfield.setText("Question " + (i+1));
+            textArea.setText(translationQ[i].toString());
+
+            buttonA.setText(translationA[i][0].toString());
+            buttonB.setText(translationA[i][1].toString());
+            answer_labelA.setText(translationA[i][0].toString());
+            answer_labelB.setText(translationA[i][1].toString());
+        }
+    }
+}
+
 
 
 
