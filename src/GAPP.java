@@ -1,33 +1,36 @@
-import com.mongodb.Mongo;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
+import com.mongodb.BasicDBObject;
+import com.mongodb.client.*;
+import org.bson.*;
 import java.util.*;
 
-public class GAPP implements Student, Host {
+public class GAPP extends Document implements Student, Host {
 
 protected int compatibilityCounter = 0;
 
     /**
      * Connect to database
      */
-    MongoClient client = MongoClients.create("localhost:27017");
-    MongoDatabase db = client.getDatabase("GAPP");
-    MongoCollection collection = db.getCollection("GAPPCollection");
+    final String uriString = "mongodb://localhost:27017";
+    private MongoClient client = MongoClients.create(uriString);
+    private MongoDatabase db = client.getDatabase("GAPP");
+    private MongoCollection<Document> studentCollection = db.getCollection("Students");
+    private MongoCollection<Document> hostCollection = db.getCollection("Hosts");
 
+    private BasicDBObject s = new BasicDBObject("medical_conditions", "N"); //find female students
+    private FindIterable studentQuery = studentCollection.find(s);
+
+    private BasicDBObject q = new BasicDBObject("medical_conditions", "N"); //find female hosts
+    private FindIterable hostsQuery = hostCollection.find(q);
 
     public GAPP(){
+        System.out.println(q.toString());
+        System.out.println(s.toString());
 
-        if (studentResponses.isEmpty() || hostResponses.isEmpty()){
-            endProgram();
-        }
-        //System.out.println("Student: " +studentResponses+"/n"+" Host:"+ hostResponses);
+        if(s==q){System.out.println("FOUND");}
+        else System.out.println("Fail");
     }
 
-
-    public int medicalIssues(){
+    /*public int medicalIssues(){
 
         //if student has medical issues && host can accommodate
         if (studentResponses.get(5) == hostResponses.get(5)){
@@ -125,7 +128,7 @@ protected int compatibilityCounter = 0;
             //do something - end program, move on to next host to find match
             //TODO: figure out how to import hosts/students from database
         }
-    }
+    }*/
     public void endProgram(){
         //System.out.print("ERROR");
         System.out.println(studentResponses +"and "+ hostResponses);

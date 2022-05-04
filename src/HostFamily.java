@@ -173,10 +173,10 @@ public class HostFamily implements ActionListener, Host{
     public void addToDatabase(){
         UUID ID = UUID.randomUUID();
         String id = ID.toString();
-        MongoClient client = MongoClients.create("mongodb+srv://GappUser:123456Password@gapp.dpgom.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-
+        final String uriString = "mongodb://localhost:27017";
+        MongoClient client = MongoClients.create(uriString);
         MongoDatabase db = client.getDatabase("GAPP");
-        MongoCollection collection = db.getCollection("GAPPCollection");
+        MongoCollection collection = db.getCollection("Hosts");
         Document sampleDoc = new Document("_id", id)
                 .append("type", "Host")
                 .append("gender", hostResponses.get(1))

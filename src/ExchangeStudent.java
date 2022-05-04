@@ -154,12 +154,12 @@ public class ExchangeStudent implements ActionListener, Student {
         buttonB.setEnabled(false);
 
        if(e.getSource()==buttonA){
-            studentResponses.put(index+1, "Yes");       //Y = Male
+            studentResponses.put(index+1, "Y");       //Y = Male
             yes++;
         }
 
         if(e.getSource()==buttonB){
-            studentResponses.put(index+1, "No");       //N = Female
+            studentResponses.put(index+1, "N");       //N = Female
             no++;
         }
 
@@ -186,10 +186,10 @@ public class ExchangeStudent implements ActionListener, Student {
     public void addToDatabase(){
         UUID ID = UUID.randomUUID();
         String id = ID.toString();
-        MongoClient client = MongoClients.create("mongodb+srv://GappUser:123456Password@gapp.dpgom.mongodb.net/myFirstDatabase?retryWrites=true&w=majority");
-
+        final String uriString = "mongodb://localhost:27017";
+        MongoClient client = MongoClients.create(uriString);
         MongoDatabase db = client.getDatabase("GAPP");
-        MongoCollection collection = db.getCollection("GAPPCollection");
+        MongoCollection collection = db.getCollection("Students");
         Document sampleDoc = new Document("_id", id)
                 .append("type", "Student")
                 .append("gender", studentResponses.get(1))

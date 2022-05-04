@@ -7,26 +7,14 @@ import org.bson.Document;
 
 import javax.swing.*;
 
-public class Main implements Host, Student{
+public class Main{
     public static void main(String[] args) throws Exception{
-    	String login = "Host";
+		//ExGAPP g = new GAPP();
+        QuizLayout n = new QuizLayout();
 
 		//ExchangeStudent student = new ExchangeStudent();
-          HostFamily host = new HostFamily();
+		//HostFamily host = new HostFamily();
 
 
     }
-
-	@Override
-	public HashMap getStudentResponses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public HashMap getHostResponses() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
 }//end of program
