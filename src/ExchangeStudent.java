@@ -1,3 +1,8 @@
+/**
+ * Author: J. Huff
+ * Date 6/5/2022
+ * CIS 111B
+ */
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
@@ -27,12 +32,10 @@ public class ExchangeStudent implements ActionListener, Student {
             "8. If you do not smoke, can you stay in a home with smoking?",
             "9. Will you stay with someone of another gender from you? (Seperate rooms are required.)",
             "10. Do you have any dietary restrictions?"
-
     };
 
     /**
      * Possible answers */
-
     String[][] options = {
             {"M", "F"},
             {"Yes", "No"},
@@ -54,6 +57,7 @@ public class ExchangeStudent implements ActionListener, Student {
     JTextArea textArea = new JTextArea();
     JButton buttonA = new JButton();
     JButton buttonB = new JButton();
+    JButton home = new JButton();
 
     JLabel answer_labelA = new JLabel();
     JLabel answer_labelB = new JLabel();
@@ -64,8 +68,6 @@ public class ExchangeStudent implements ActionListener, Student {
     int total_questions = questions.length;
 
     JTextField responses = new JTextField();        //show them their responses
-    JTextArea possibleMatched = new JTextArea();    //show possible matches
-
 
     /**
      * Constructor
@@ -84,7 +86,6 @@ public class ExchangeStudent implements ActionListener, Student {
         textfield.setBorder(BorderFactory.createSoftBevelBorder(1));
         textfield.setHorizontalAlignment(JTextField.CENTER);
         textfield.setEditable(false);
-        textfield.setText("TESTING");
 
         textArea.setBounds(0, 50, 650, 100);
         textArea.setLineWrap(true);
@@ -110,10 +111,19 @@ public class ExchangeStudent implements ActionListener, Student {
         buttonB.setFocusable(false);
         buttonB.addActionListener(this);
 
+        home.setBounds(500, 550,75,40);
+        home.setBackground(new Color(186,186,186));
+        home.setBorder(BorderFactory.createSoftBevelBorder(1));
+        home.setFont(new Font("Monospaced", Font.BOLD, 15));
+        home.setFocusable(true);
+        home.addActionListener(this);
+        home.setText(" Home ");
+
         frame.add(buttonB);
         frame.add(buttonA);
         frame.add(textArea);
         frame.add(textfield);
+        frame.add(home);
         frame.setVisible(true);
 
         nextQuestion();
@@ -162,6 +172,10 @@ public class ExchangeStudent implements ActionListener, Student {
             studentResponses.put(index+1, "N");       //N = Female
             no++;
         }
+        if(e.getSource()==home){
+            frame.dispose();
+            QuizLayout quiz = new QuizLayout();
+        }
 
         index++;
         nextQuestion();
@@ -176,8 +190,8 @@ public class ExchangeStudent implements ActionListener, Student {
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
 
-        textfield.setText("RESULTS");
-        textArea.setText("Answers: "+ studentResponses);
+        textfield.setText("GAPP");
+        textArea.setText(" Thank you for your input. ");
 
         //Connect to db
         addToDatabase();

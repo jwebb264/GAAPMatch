@@ -1,3 +1,8 @@
+/**
+ * Author: J. Huff
+ * Date 6/5/2022
+ * CIS 111B
+ */
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -46,6 +51,7 @@ public class HostFamily implements ActionListener, Host{
     JTextArea textArea = new JTextArea();
     JButton buttonA = new JButton();
     JButton buttonB = new JButton();
+    JButton home = new JButton();
 
     JLabel answer_labelA = new JLabel();
     JLabel answer_labelB = new JLabel();
@@ -102,10 +108,19 @@ public class HostFamily implements ActionListener, Host{
         buttonB.setFocusable(false);
         buttonB.addActionListener(this);
 
+        home.setBounds(500, 550,75,40);
+        home.setBackground(new Color(186,186,186));
+        home.setBorder(BorderFactory.createSoftBevelBorder(1));
+        home.setFont(new Font("Monospaced", Font.BOLD, 15));
+        home.setFocusable(true);
+        home.addActionListener(this);
+        home.setText(" Home ");
+
         frame.add(buttonB);
         frame.add(buttonA);
         frame.add(textArea);
         frame.add(textfield);
+        frame.add(home);
         frame.setVisible(true);
 
         nextQuestion();
@@ -152,6 +167,10 @@ public class HostFamily implements ActionListener, Host{
         if(e.getSource()==buttonB){
             hostResponses.put(index+1, "N");       //N = Female
             no++;
+        }
+        if(e.getSource()==home){
+            frame.dispose();
+            QuizLayout quiz = new QuizLayout();
         }
 
         index++;

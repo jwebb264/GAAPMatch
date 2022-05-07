@@ -1,3 +1,9 @@
+/**
+ * Author: J. Huff
+ * Date 6/5/2022
+ * CIS 111B
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,21 +13,26 @@ import java.awt.event.ActionListener;
 public class QuizLayout implements ActionListener {
     /**
      * GUI components
+     * 2D array options holds answers to the questions as they're asked
+     * TODO: Add 2nd array to loop through actual questions since I've added several now
      */
-    String[][] options = {{"English", "Deutsch"},{"Student", "Host"}};
+    String[][] options = {{"English", "Deutsch"},{"Applicant", "Teacher"},{"Student", "Host"}};
+
     protected JFrame frame = new JFrame();
     protected JTextField textfield = new JTextField();
     protected JTextArea textArea = new JTextArea();
-    protected JButton english = new JButton();
-    protected JButton german = new JButton();
+    protected JButton first = new JButton();
+    protected JButton second = new JButton();
+    protected JButton home = new JButton();
 
     protected char index;
+    protected int total_questions = options.length;
 
-    protected JLabel answer_labelA = new JLabel();
-    protected JLabel answer_labelB = new JLabel();
-
-    protected JTextArea possibleMatched = new JTextArea();    //show possible matches
-
+    /**
+     * Constructor
+     * Creates GUI for quiz
+     * Calls nextQuestion method
+     */
     public QuizLayout() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(650, 650);
@@ -49,66 +60,110 @@ public class QuizLayout implements ActionListener {
         textArea.setText("Please make your selections" + "\n" +
                 "Bitte treffen Sie Ihre Auswahl");
 
-        english.setBounds(150, 200,100,50);
-        english.setBackground(new Color(186,186,186));
-        english.setBorder(BorderFactory.createSoftBevelBorder(1));
-        english.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        english.setFocusable(false);
-        english.addActionListener(this);
+        first.setBounds(100, 200,150,50);
+        first.setBackground(new Color(186,186,186));
+        first.setBorder(BorderFactory.createSoftBevelBorder(1));
+        first.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        first.setFocusable(false);
+        first.addActionListener(this);
 
-        german.setBounds(400, 200,100,50);
-        german.setBackground(new Color(186,186,186));
-        german.setBorder(BorderFactory.createSoftBevelBorder(1));
-        german.setFont(new Font("Monospaced", Font.PLAIN, 20));
-        german.setFocusable(false);
-        german.addActionListener(this);
+        second.setBounds(400, 200,150,50);
+        second.setBackground(new Color(186,186,186));
+        second.setBorder(BorderFactory.createSoftBevelBorder(1));
+        second.setFont(new Font("Monospaced", Font.PLAIN, 20));
+        second.setFocusable(false);
+        second.addActionListener(this);
+
+        home.setBounds(500, 550,75,40);
+        home.setBackground(new Color(186,186,186));
+        home.setBorder(BorderFactory.createSoftBevelBorder(1));
+        home.setFont(new Font("Monospaced", Font.BOLD, 15));
+        home.setFocusable(true);
+        home.addActionListener(this);
+        home.setText(" Home ");
 
 
-        frame.add(english);
-        frame.add(german);
 
+        frame.add(first);
+        frame.add(second);
         frame.add(textArea);
         frame.add(textfield);
+        frame.add(home);
         frame.setVisible(true);
 
         nextQuestion();
 
     }
 
-    public void nextQuestion(){
-        english.setEnabled(true);
-        german.setEnabled(true);
+    /**
+     * Creates String array to store answers to first round of questions
+     */
+    String[] type = new String[total_questions+1];
 
-        english.setText(options[index][0]);
-        german.setText(options[index][1]);
+    /**
+     * nextQuestion method
+     * no params
+     * Loops through 2D array "options"
+     * If index gets to end, calls startQuiz() method
+     * Else, if the index of array type at position 1 is a teacher, new GAPP class created, and will be able to
+     * query database
+     */
+    public void nextQuestion(){
+        first.setEnabled(true);
+        second.setEnabled(true);
+
+        if(index == total_questions){
+            startQuiz();
+        }else if(type[1]=="second"){                  //teacher
+            frame.dispose();
+            GAPP n = new GAPP();
+        }
+        else {
+            first.setText(options[index][0]);
+            second.setText(options[index][1]);
+        }
     }
 
+    /**
+     * Disables buttons briefly to prevent double clicks
+     * Adds answers to type array
+     * @param e - the ActionEvent performed, in this case, a button click
+     * Calls nextQuestion method to loop through all questions
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
-        english.setEnabled(false);
-        german.setEnabled(false);
+        first.setEnabled(false);
+        second.setEnabled(false);
+        if(e.getSource()==first){
+            type[index]="first";
+            index++;
+            nextQuestion();
 
-        if(e.getSource()==english){
+        }if(e.getSource()==second){          //ADD TRANSLATIONS HERE
+            type[index]="second";
             index++;
             nextQuestion();
-            if(e.getSource()==english){
-                ExchangeStudent student = new ExchangeStudent();
-            }
-            if(e.getSource()==german){
-                HostFamily host = new HostFamily();
-            }
+        }if(e.getSource()==home){
+            frame.dispose();
+            QuizLayout quiz = new QuizLayout();
         }
-        if(e.getSource()==german){          //ADD TRANSLATIONS HERE
-            index++;
-            nextQuestion();
-            if(e.getSource()==english){
-                ExchangeStudent student = new ExchangeStudent();
-            }
-            if(e.getSource()==german){
-                HostFamily host = new HostFamily();
-            }
+    }
+
+    /**
+     * Called when all questions are answered. Determines if student or host,
+     * creates appropriate GUI
+     */
+    public void startQuiz(){
+        first.setEnabled(false);
+        second.setEnabled(false);
+
+        if(type[2].equalsIgnoreCase("first")){                 //student
+            frame.dispose();
+            ExchangeStudent student = new ExchangeStudent();
         }
-        index++;
-        nextQuestion();
+        else if(type[2].equalsIgnoreCase("second")){             //host
+            frame.dispose();
+            HostFamily host = new HostFamily();
+        }
     }
 }
