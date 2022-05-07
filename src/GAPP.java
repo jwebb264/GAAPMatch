@@ -1,5 +1,5 @@
 /**
- * Author: J. Huff, Brad S, Riannon C
+ * Authors: J. Huff, Brad S, Riannon C
  * Date 5/5/2022
  * CIS 111B
  */
@@ -9,31 +9,27 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 import java.util.function.Consumer;
 
 public class GAPP extends Document implements ActionListener {
 
-
     /**
      * GUI components
      */
-    String queryType;
-    String queryCriteria;
+    protected String queryType;
+    protected String queryCriteria;
 
-    JFrame frame = new JFrame();
-    JTextField textfield = new JTextField();
-    JTextArea textfield2 = new JTextArea();
-    JTextField typeinput = new JTextField();
-    JTextField query = new JTextField();
-    JButton submit = new JButton();
-    JButton home = new JButton();
-
+    protected JFrame frame = new JFrame();
+    protected JTextField textfield = new JTextField();
+    protected JTextArea textfield2 = new JTextArea();
+    protected JTextField typeinput = new JTextField();
+    protected JTextField query = new JTextField();
+    protected JButton submit = new JButton();
+    protected JButton home = new JButton();
     /**
      * Constructor
      * Creates gui base, calls startGUI() method
      */
-
     public GAPP(){
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 650);
@@ -90,12 +86,14 @@ public class GAPP extends Document implements ActionListener {
         startGUI();
     }
 
+    /**
+     * Start GUI. Takes input from user. With more time, would make it a dropdown menu to select items from.
+     */
     public void startGUI(){
         textfield.setText(" Enter search criteria ");
-
         textfield2.setBounds(20,50,650,100);
         textfield2.setText(" Search criteria should be in this format: " +"\n"+
-                " Student Female \n" + " Host Smoker");
+                "    Student Female"+ "\n" + "    Host Smoker");
         typeinput.setEnabled(true);
         query.setEnabled(true);
         submit.setText(" Submit ");
@@ -109,6 +107,14 @@ public class GAPP extends Document implements ActionListener {
         frame.setVisible(true);
     }
 
+    /**
+     * actionPerformed
+     * @param e on click event
+     * Pulls text from user to use for seraching database.
+     *          Checks button use as well
+     *          Calls searchResults() method or
+     *          Creates new GUI
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         submit.setEnabled(false);
@@ -132,9 +138,9 @@ public class GAPP extends Document implements ActionListener {
     protected MongoCollection<Document> hostCollection = db.getCollection("Hosts");
     protected MongoCollection<Document> GAPPCollection = db.getCollection("GAPPCollection");
 
-    String key="";
-    String value="";
-    int num=0;
+    protected String key="";
+    protected String value="";
+    protected int num=0;
 
     /**
      * searchResults takes input from user, and pulls those documents from the database.
@@ -159,6 +165,10 @@ public class GAPP extends Document implements ActionListener {
         else if (queryCriteria.contains("no diet")){key="dietary_restrictions";value="N";}
         else {key = " "; value=" ";}
 
+        /**
+         * Finds data from local database. Improvement - print prettily. Lets user know how many matches there are
+         * in the database
+         */
         if(queryType.contains("stu")) {
             Document q = new Document(key, value);
             FindIterable query = studentCollection.find(q);
@@ -167,11 +177,9 @@ public class GAPP extends Document implements ActionListener {
                 public void accept(Document q) {
                     num++;
                     textfield2.setText(q.toJson());
-                    System.out.println(q.toJson());
                 }
-            };  query.forEach(print);
-            //textfield2.setText(q +" "+ num);
-
+            };
+            query.forEach(print);
         }else if(queryType.contains("host")) {
             Document q = new Document(key, value);
             FindIterable query = hostCollection.find(q);
@@ -180,11 +188,9 @@ public class GAPP extends Document implements ActionListener {
                 public void accept(Document q) {
                     num++;
                     textfield2.setText(q.toJson());
-                    System.out.println(q.toJson());
-
                 }
-            };  query.forEach(print);
-
+            };
+            query.forEach(print);
         }else {
             Document a = new Document();
             FindIterable query = GAPPCollection.find(a);
@@ -195,16 +201,15 @@ public class GAPP extends Document implements ActionListener {
                     textfield2.setText(q.toJson());
                     System.out.println(q.toJson());
                 }
-            };  query.forEach(print);
+            };
+            query.forEach(print);
         }
         textfield.setText(" There are "+ num +" matches."+"\n");
         textfield2.setBounds(25,50,650,300);
-
         frame.add(textfield);
         frame.add(textfield2);
         frame.remove(query);
         frame.remove(typeinput);
         frame.setVisible(true);
     }
-
 }//end program

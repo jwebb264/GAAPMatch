@@ -1,6 +1,6 @@
 /**
- * Author: J. Huff
- * Date 6/5/2022
+ * Authors: J. Huff, Brad S, Riannon C
+ * Date 5/5/2022
  * CIS 111B
  */
 
@@ -14,7 +14,6 @@ public class QuizLayout implements ActionListener {
     /**
      * GUI components
      * 2D array options holds answers to the questions as they're asked
-     * TODO: Add 2nd array to loop through actual questions since I've added several now
      */
     String[][] options = {{"English", "Deutsch"},{"Applicant", "Teacher"},{"Student", "Host"}};
 
@@ -47,7 +46,7 @@ public class QuizLayout implements ActionListener {
         textfield.setBorder(BorderFactory.createSoftBevelBorder(1));
         textfield.setHorizontalAlignment(JTextField.CENTER);
         textfield.setEditable(false);
-        textfield.setText("Welcome! Herzlich Willkommen!");
+        textfield.setText("Welcome!"+"\n"+"Herzlich Willkommen!");
 
         textArea.setBounds(0, 50, 650, 100);
         textArea.setLineWrap(true);
@@ -60,6 +59,9 @@ public class QuizLayout implements ActionListener {
         textArea.setText("Please make your selections" + "\n" +
                 "Bitte treffen Sie Ihre Auswahl");
 
+        /**
+         * First button. Contains values for english, applicant, and student
+         */
         first.setBounds(100, 200,150,50);
         first.setBackground(new Color(186,186,186));
         first.setBorder(BorderFactory.createSoftBevelBorder(1));
@@ -67,6 +69,9 @@ public class QuizLayout implements ActionListener {
         first.setFocusable(false);
         first.addActionListener(this);
 
+        /**
+         * Second button. Contains values for german, teacher, and host
+         */
         second.setBounds(400, 200,150,50);
         second.setBackground(new Color(186,186,186));
         second.setBorder(BorderFactory.createSoftBevelBorder(1));
@@ -74,6 +79,9 @@ public class QuizLayout implements ActionListener {
         second.setFocusable(false);
         second.addActionListener(this);
 
+        /**
+         * Home button
+         */
         home.setBounds(500, 550,75,40);
         home.setBackground(new Color(186,186,186));
         home.setBorder(BorderFactory.createSoftBevelBorder(1));
@@ -81,8 +89,6 @@ public class QuizLayout implements ActionListener {
         home.setFocusable(true);
         home.addActionListener(this);
         home.setText(" Home ");
-
-
 
         frame.add(first);
         frame.add(second);
@@ -166,4 +172,4 @@ public class QuizLayout implements ActionListener {
             HostFamily host = new HostFamily();
         }
     }
-}
+}//end program

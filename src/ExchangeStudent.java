@@ -3,7 +3,6 @@
  * Date 6/5/2022
  * CIS 111B
  */
-import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -37,8 +36,7 @@ public class ExchangeStudent implements ActionListener, Student {
     /**
      * Possible answers */
     String[][] options = {
-            {"M", "F"},
-            {"Yes", "No"},
+            {"Male", "Female"},
             {"Yes", "No"},
             {"Yes", "No"},
             {"Yes", "No"},
@@ -52,22 +50,20 @@ public class ExchangeStudent implements ActionListener, Student {
     /**
      * GUI
      */
-    JFrame frame = new JFrame();
-    JTextField textfield = new JTextField();
-    JTextArea textArea = new JTextArea();
-    JButton buttonA = new JButton();
-    JButton buttonB = new JButton();
-    JButton home = new JButton();
+    protected JFrame frame = new JFrame();
+    protected JTextField textfield = new JTextField();
+    protected JTextArea textArea = new JTextArea();
+    protected JButton buttonA = new JButton();
+    protected JButton buttonB = new JButton();
+    protected JButton home = new JButton();
 
-    JLabel answer_labelA = new JLabel();
-    JLabel answer_labelB = new JLabel();
+    protected JLabel answer_labelA = new JLabel();
+    protected JLabel answer_labelB = new JLabel();
     /**
      * additional variables needed for construction of quiz
      */
     char index;
     int total_questions = questions.length;
-
-    JTextField responses = new JTextField();        //show them their responses
 
     /**
      * Constructor
@@ -97,14 +93,14 @@ public class ExchangeStudent implements ActionListener, Student {
         textArea.setEditable(false);
         textArea.setText("Sample Testing");
 
-        buttonA.setBounds(150, 200,50,50);
+        buttonA.setBounds(150, 200,75,50);
         buttonA.setBackground(new Color(186,186,186));
         buttonA.setBorder(BorderFactory.createSoftBevelBorder(1));
         buttonA.setFont(new Font("Monospaced", Font.PLAIN, 20));
         buttonA.setFocusable(false);
         buttonA.addActionListener(this);
 
-        buttonB.setBounds(400, 200,50,50);
+        buttonB.setBounds(400, 200,90,50);
         buttonB.setBackground(new Color(186,186,186));
         buttonB.setBorder(BorderFactory.createSoftBevelBorder(1));
         buttonB.setFont(new Font("Monospaced", Font.PLAIN, 20));
@@ -142,7 +138,6 @@ public class ExchangeStudent implements ActionListener, Student {
         } else {
             textfield.setText("Question " + (index+1));
             textArea.setText(questions[index]);
-
             buttonA.setText(options[index][0]);
             buttonB.setText(options[index][1]);
             answer_labelA.setText(options[index][0]);
@@ -150,18 +145,22 @@ public class ExchangeStudent implements ActionListener, Student {
         }
     }
 
-
-    int yes=0;
-    int no=0;
+    protected int yes=0;
+    protected int no=0;
 
     /**
-     * disable buttons when clicked, increment yes/no answers, move to next question, fill array
-     * @param e
+     * @param e disables buttons, fills hostResponses array, increments y/n, moves to next question
+     *          increments index, and calls nextQuestion() method
      */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         buttonA.setEnabled(false);
         buttonB.setEnabled(false);
+
+        /**
+         * Checks data and fills studentResponses
+         */
 
        if(e.getSource()==buttonA){
             studentResponses.put(index+1, "Y");       //Y = Male
@@ -180,11 +179,10 @@ public class ExchangeStudent implements ActionListener, Student {
         index++;
         nextQuestion();
         studentResponses.toString();
-
     }
 
     /**
-     * show results - prove that array is being filled
+     * Ends quiz, calls addToDatabase() method
      */
     public void results(){
         buttonA.setEnabled(false);
@@ -193,10 +191,13 @@ public class ExchangeStudent implements ActionListener, Student {
         textfield.setText("GAPP");
         textArea.setText(" Thank you for your input. ");
 
-        //Connect to db
         addToDatabase();
     }
-
+    /**
+     * Connect to local database.
+     * Generate unique ID
+     * Add responses to database
+     */
     public void addToDatabase(){
         UUID ID = UUID.randomUUID();
         String id = ID.toString();
@@ -228,7 +229,5 @@ public class ExchangeStudent implements ActionListener, Student {
     public HashMap getStudentResponses() {
         return studentResponses;
     }
-
-
 }
 //end program
