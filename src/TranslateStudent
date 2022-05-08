@@ -1,0 +1,205 @@
+
+/**
+ * Authors: J. Huff, Brad S, Riannon C
+ * Date 5/5/2022
+ * CIS 111B
+ * 
+ * This class is /supposed/ to translate the questions and answers for the Exchange Student, but ultimately we couldn't
+ * get it to run and translate anything after the first question. We are including it as proof that we tried extensively
+ * to make it work.
+ */
+
+
+package com.amazonaws.gappFinal;
+
+// Needed for GUI
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.Serializable;
+import java.util.*;
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+
+// Needed for ArrayList and HashMap
+import java.util.ArrayList;
+import java.util.HashMap;
+
+// Needed for AWS Translate
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.translate.AmazonTranslate;
+import com.amazonaws.services.translate.AmazonTranslateClient;
+import com.amazonaws.services.translate.model.TranslateTextRequest;
+import com.amazonaws.services.translate.model.TranslateTextResult;
+ 
+public class TranslateStudent extends ExchangeStudent implements Student{
+	
+	/**
+	 * Constructor, originally had GUI information identical to ExchangeStudent copied here,
+	 * but I wasn't sure if it was necessary and the program ran the same either way
+	 * (that is, translated the first question and then crashed)
+	 */
+    public TranslateStudent(){
+        nextQuestion(translateQuestions());
+    }
+
+    
+	/**
+	 * Method to translate the questions array into selected language (German). 
+	 * Questions are pulled from the questions array one at a time, translated and put into a String variable, 
+	 * then the result is added to the ArrayList. We also tried writing this method using an Array, and trying to 
+	 * translate the content directly from the array at [i] and adding that result to a new Array at [i]. 
+	 * That was also unsuccessful and only allowed the first question to be translated, which is the result of
+	 * this method with ArrayList as well. 
+	 * 
+	 * @return translated String ArrayList, should hold German translations
+	 */
+	public ArrayList<String> translateQuestions() {
+		
+	// Needed for AWS Translate
+    final String REGION = "us-east-1"; {
+    	
+    	// ArrayList to hold translations
+        ArrayList<String> translatedArrayQuestions = new ArrayList<String>();
+        // String variable that should hold each translation as the loop progresses and is added to the ArrayList
+        String text = "";
+
+        	// This sets up the translation
+            AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
+            
+            AmazonTranslate translate = AmazonTranslateClient.builder()
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds.getCredentials()))
+                    .withRegion(REGION)
+                    .build(); 
+            
+            // This does the translation and should copy the translations one at a time to the ArrayList via the text variable     
+            for(int i = 0; i < questions.length; i++)
+            {
+            	text = questions[i];
+                TranslateTextRequest translateQuestions = new TranslateTextRequest();
+                translateQuestions.withText(text);
+            	translateQuestions.withSourceLanguageCode("en")
+                .withTargetLanguageCode("de");        		
+            	TranslateTextResult resultQuestions  = translate.translateText(translateQuestions);
+            	text = resultQuestions.toString();
+            	translatedArrayQuestions.add(text);
+        } 
+        // Return the newly translated ArrayList
+        return translatedArrayQuestions;
+ 
+    } }
+    
+	
+	/**This should take the user to the next question using the translated ArrayList
+	 * 
+	 * @param translationQ the translated ArrayList from the method above to be used as question prompts
+	 * to the user in the GUI
+	 */
+	
+    public void nextQuestion(ArrayList<String> translationQ){
+    	
+    	int total_questions = translationQ.size();
+    	
+        buttonA.setEnabled(true);
+        buttonB.setEnabled(true);
+
+        if (index >= total_questions){
+            results();
+        } else {
+            textfield.setText("Question " + (index+1));
+            textArea.setText(translationQ.get(index));
+
+            buttonA.setText(options[index][0]);
+            buttonB.setText(options[index][1]);
+            answer_labelA.setText(options[index][0]);
+            answer_labelB.setText(options[index][1]);
+        }
+    }
+    
+    /**
+     * Method for button clicks and stores necessary information to HashMap in Student class
+     */
+    public void actionPerformed(ActionEvent e) {
+        buttonA.setEnabled(false);
+        buttonB.setEnabled(false);
+
+       if(e.getSource()==buttonA){
+            studentResponses.put(index+1, 'Y');       //Y = Male
+            yes++;
+        }
+
+        if(e.getSource()==buttonB){
+            studentResponses.put(index+1, 'N');       //N = Female
+            no++;
+        }
+
+        index++;
+        nextQuestion(translateQuestions());
+
+    }
+
+    /**Method to show results
+     * 
+     */
+    public void results(){
+	    buttonA.setEnabled(false);
+	    buttonB.setEnabled(false);
+	
+	    textfield.setText("ERGEBNIS");
+	    textArea.setText("Antworten: "+studentResponses);
+	
+	}
+	
+    /**
+     * get student responses
+     */
+	public HashMap getStudentResponses() {
+	    return studentResponses;
+	}
+}
+
+
+/********* Commented out because it /really/ didn't work, I think because of the 2D array? **********/
+
+
+/**
+ * This should do the same as above, but this time it will translate the Options array from ExchangeStudent (the potential answers)
+ * and add the translations to a new String array {translatedArrayOptions[])
+ * @return translatedArrayOptions the new array of the translated Strings of potential answers 
+ */
+/**public String[][] translateOptions() {
+	
+	// Needed for AWS Translate
+    final String REGION = "us-east-1"; {
+    	
+    	// Array to hold translations
+        String[][] translatedArrayOptions = new String[options.length][options.length];
+        
+		AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
+        
+		AmazonTranslate translate = AmazonTranslateClient.builder()
+            .withCredentials(new AWSStaticCredentialsProvider(awsCreds.getCredentials()))
+            .withRegion(REGION)
+            .build(); 
+		
+        // Loops through options array, translates each and adds result to new translated options array
+        for(int i = 0; i < options.length; i++) {
+        	for(int j = 0; j < options.length; j++) {
+        		
+        			TranslateTextRequest translateOptions = new TranslateTextRequest();
+                    translateOptions.withText(options[i][j].toString())
+                    .withSourceLanguageCode("en")
+                    .withTargetLanguageCode("de");
+        		TranslateTextResult resultOptions  = translate.translateText(translateOptions);
+        		translatedArrayOptions[i][j] = resultOptions.toString();          	
+        	}
+        }
+        
+        // The translated array of options
+        return translatedArrayOptions;
+    }
+}
+*/
+    
