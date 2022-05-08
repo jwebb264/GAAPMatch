@@ -1,0 +1,137 @@
+package com.amazonaws.gappFinal;
+
+
+/**
+ * Authors: J. Huff, Brad S, Riannon C
+ * Date 5/5/2022
+ * CIS 111B
+ * 
+ * This class is /supposed/ to translate the questions and answers for the Host Family, but ultimately we couldn't
+ * get it to run and translate anything after the first question. Less was attempted on this class compared to the 
+ * TranslateStudent class, but we are including it on GitHub anyway to show that we tried.
+ */
+
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.services.translate.AmazonTranslate;
+import com.amazonaws.services.translate.AmazonTranslateClient;
+import com.amazonaws.services.translate.model.TranslateTextRequest;
+import com.amazonaws.services.translate.model.TranslateTextResult;
+ 
+public class TranslateHost extends HostFamily{
+	
+	/**
+	 * Constructor
+	 */
+	public TranslateHost() {
+    	nextQuestion(translateQuestions(),translateOptions());
+	}
+
+	/**
+	 * Method to translate the questions array into selected language (German)
+	 * @return translated String array, should hold German translations now
+	 */
+	public String[] translateQuestions() {
+		
+	// Needed for AWS Translate
+    final String REGION = "us-east-1"; {
+    	
+    	// Array to hold translations
+        String[] translatedArrayQuestions = new String[questions.length];
+        
+        // Loops through questions array, translates and adds translation String to new String array (translatedQuestions[])
+
+        	// This sets up the translation
+            AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
+            
+            AmazonTranslate translate = AmazonTranslateClient.builder()
+                    .withCredentials(new AWSStaticCredentialsProvider(awsCreds.getCredentials()))
+                    .withRegion(REGION)
+                    .build(); 
+            
+            // This does the translation and copies the results to the new array
+            TranslateTextRequest translateQuestions = new TranslateTextRequest();
+                   //withText(questions[i].toString())
+                    translateQuestions.withSourceLanguageCode("en")
+                    .withTargetLanguageCode("de");
+            
+            for(int i = 0; i < questions.length; i++)
+            {
+            	translateQuestions.withSourceLanguageCode("en")
+                .withTargetLanguageCode("de");
+            		translateQuestions.withText(questions[i].toString());
+            		
+            TranslateTextResult resultQuestions  = translate.translateText(translateQuestions);
+            translatedArrayQuestions[i] = resultQuestions.toString();        	
+        }
+        
+        // Return the newly translated array
+        return translatedArrayQuestions;
+ 
+    } }
+    
+	/**
+	 * This should do the same as above, but this time it will translate the Options array from ExchangeStudent (the potential answers)
+	 * and add the translations to a new String array {translatedArrayOptions[])
+	 * @return translatedArrayOptions the new array of the translated Strings of potential answers 
+	 */
+	public String[][] translateOptions() {
+		
+		// Needed for AWS Translate
+	    final String REGION = "us-east-1"; {
+	    	
+	    	// Array to hold translations
+	        String[][] translatedArrayOptions = new String[options.length][options.length];
+	        
+    		AWSCredentialsProvider awsCreds = DefaultAWSCredentialsProviderChain.getInstance();
+            
+    		AmazonTranslate translate = AmazonTranslateClient.builder()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds.getCredentials()))
+                .withRegion(REGION)
+                .build(); 
+    		TranslateTextRequest translateOptions = new TranslateTextRequest();
+    		
+	        // Loops through options array, translates each and adds result to new translated options array
+	        for(int i = 0; i < options.length; i++) {
+	        	for(int j = 0; j < options.length; j++) {
+	                    translateOptions.withText(options[i][j].toString())
+	                    .withSourceLanguageCode("en")
+	                    .withTargetLanguageCode("de");
+	        		TranslateTextResult resultOptions  = translate.translateText(translateOptions);
+	        		translatedArrayOptions[i][j] = resultOptions.toString();          	
+	        	}
+	        }
+	        
+	        // The translated array of options
+	        return translatedArrayOptions;
+	    }
+	}
+	
+	/**
+	 * Method to progress to next question in question array
+	 * @param translationQ the translated questions array
+	 * @param translationA the translated answers array
+	 */
+    public void nextQuestion(String[] translationQ, String[][] translationA){
+    	
+    	int total_questions = translationQ.length;
+        buttonA.setEnabled(true);
+        buttonB.setEnabled(true);
+
+        	for(int i = 0; i < total_questions; i++) {
+        		for(int j = 0; j < total_questions; j++) {
+        	
+            textfield.setText("Question " + (i+1));
+            textArea.setText(translationQ[i].toString());
+
+            buttonA.setText(translationA[i][j].toString());
+            buttonB.setText(translationA[i][j].toString());
+            answer_labelA.setText(translationA[i][j].toString());
+            answer_labelB.setText(translationA[i][j].toString());
+           }
+        }
+               results();
+    }
+    
+}
